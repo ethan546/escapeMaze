@@ -1,0 +1,190 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Sat Nov 30 21:43:15 2019
+
+@author: yoojinkim1797
+"""
+
+import graphics as g
+import math
+
+class Player:
+    def __init__(self,win,x,y):
+        self.w = win
+        self.x = x
+        self.y = y
+        self.create()
+          
+    def create(self): # draw the player
+        
+        self.body = g.Rectangle(g.Point(self.x-20, self.y-35), 
+                                g.Point(self.x+20, self.y+25))
+        self.hitbox = g.Rectangle(g.Point(self.x-35, self.y-75), 
+                                g.Point(self.x+35, self.y+70))
+        self.left_hand = g.Circle(g.Point(self.x+27, self.y+10), 8)
+        self.right_hand = g.Circle(g.Point(self.x-27, self.y+10), 8)
+        self.left_arm = g.Rectangle(g.Point(self.x-35, self.y-35), 
+                                    g.Point(self.x-20, self.y+10))
+        self.right_arm = g.Rectangle(g.Point(self.x+20, self.y-35), 
+                                     g.Point(self.x+35, self.y+10))
+        self.left_shoe = g.Circle(g.Point(self.x-10, self.y+60), 10)
+        self.right_shoe = g.Circle(g.Point(self.x+10, self.y+60), 10)
+        self.left_leg = g.Rectangle(g.Point(self.x, self.y+25), 
+                                    g.Point(self.x-20, self.y+60))
+        self.right_leg = g.Rectangle(g.Point(self.x, self.y+25), 
+                                    g.Point(self.x+20, self.y+60))
+        self.head = g.Circle(g.Point(self.x, self.y-50), 25)
+        
+        self.hitbox.setFill('white')
+        self.body.setFill('blue')
+        self.left_hand.setFill('orange')
+        self.right_hand.setFill('orange')
+        self.left_arm.setFill('blue')
+        self.right_arm.setFill('blue')
+        self.left_shoe.setFill('black')
+        self.right_shoe.setFill('black')
+        self.left_leg.setFill('brown')
+        self.right_leg.setFill('brown')
+        self.head.setFill('orange')
+        
+        # self.hitbox.draw(self.w) see hitbox
+        self.body.draw(self.w)
+        self.left_hand.draw(self.w)
+        self.right_hand.draw(self.w)
+        self.left_arm.draw(self.w)
+        self.right_arm.draw(self.w)
+        self.left_shoe.draw(self.w)
+        self.right_shoe.draw(self.w)
+        self.left_leg.draw(self.w)
+        self.right_leg.draw(self.w)
+        self.head.draw(self.w)
+        
+    def control(self, key):
+        if key == 'Up':
+            self.hitbox.move(0, -20)
+            self.body.move(0, -20)
+            self.left_hand.move(0, -20)
+            self.right_hand.move(0, -20)
+            self.left_arm.move(0, -20)
+            self.right_arm.move(0, -20)
+            self.left_leg.move(0, -20)
+            self.right_leg.move(0, -20)
+            self.left_shoe.move(0, -20)
+            self.right_shoe.move(0, -20)
+            self.head.move(0, -20)
+            
+        if key == 'Down':
+            self.hitbox.move(0, 20)
+            self.body.move(0, 20)
+            self.left_hand.move(0, 20)
+            self.right_hand.move(0, 20)
+            self.left_arm.move(0, 20)
+            self.right_arm.move(0, 20)
+            self.left_leg.move(0, 20)
+            self.right_leg.move(0, 20)
+            self.left_shoe.move(0, 20)
+            self.right_shoe.move(0, 20)
+            self.head.move(0, 20)
+            
+        if key == 'Right':
+            self.hitbox.move(20, 0)
+            self.body.move(20, 0)
+            self.left_hand.move(20, 0)
+            self.right_hand.move(20, 0)
+            self.left_arm.move(20, 0)
+            self.right_arm.move(20, 0)
+            self.left_leg.move(20, 0)
+            self.right_leg.move(20, 0)
+            self.left_shoe.move(20, 0)
+            self.right_shoe.move(20, 0)
+            self.head.move(20, 0)
+            
+        if key == 'Left':
+            self.hitbox.move(-20, 0)
+            self.body.move(-20, 0)
+            self.left_hand.move(-20, 0)
+            self.right_hand.move(-20, 0)
+            self.left_arm.move(-20, 0)
+            self.right_arm.move(-20, 0)
+            self.left_leg.move(-20, 0)
+            self.right_leg.move(-20, 0)
+            self.left_shoe.move(-20, 0)
+            self.right_shoe.move(-20, 0)
+            self.head.move(-20, 0)
+            
+        #elif key == 'space':
+         #   Bullet(self.w, self.body.getCenter().getX(), self.body.getCenter().getY())
+    def player_collision(self, other):
+        self.other = other
+        distX = self.body.getCenter().getX() - other.body.getCenter().getX()
+        distY = self.body.getCenter().getY() - other.body.getCenter().getY()
+        totDist = math.sqrt((distX**2)+(distY**2))
+        #((distX**2)+(distY**2))**(1/2)
+        if totDist <= other.getCenter() + Player.hitbox.getCenter():
+            return True
+        else:
+            return False
+        
+    #if player_collision:
+        
+        
+        
+         
+class Shield:
+    def __init__(self,win,x,y):
+        self.w = win
+        self.x = x
+        self.y = y
+        self.create()
+    
+    def create(self):
+        self.body = g.Circle(g.Point(self.x, self.y), 15)
+        self.body.setFill('purple')
+        self.body.draw(self.w)
+    
+    def picked_up(self): # when player collides with shield, 
+                        # shield gets deleted and player gains shielding powers
+        distX = Player.body.getCenter().getX() - self.body.getCenter().getX()
+        distY = Player.body.getCenter().getY() - self.body.getCenter().getY()
+        totDist = math.sqrt((distX**2)+(distY**2))
+        if totDist <= self.getCenter() + Player.hitbox.getCenter():
+            Shield.remove()
+            return True
+        else:
+            return False
+        
+    
+class Health:
+    def __init__(self,win,x,y):
+        self.w = win
+        self.x = x
+        self.y = y
+        self.create()
+        
+    def create(self):
+        self.body = g.Rectangle(g.Point(self.x-140, self.y-10),
+                                g.Point(self.x+140, self.y+10))
+        self.body.setFill('red')
+        self.body.draw(self.w)
+        
+    def loseHealth(self):
+        if player_collision:
+            Health.remove()
+            
+        
+        
+        
+        
+    
+
+w = g.GraphWin('CS Project Game', 1250, 700, autoflush = False)
+w.setBackground('green')
+S = Shield(w, 200, 100)
+P = Player(w, 575, 350)
+H = Health(w, 1100, 685)
+key = None
+while key != 'q':
+    key = w.checkKey()
+    P.control(key)
+w.close()
