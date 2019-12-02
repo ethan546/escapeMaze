@@ -1,3 +1,4 @@
+###### only the second level is on here for now but these functions/general logic will be used for all levels
 import graphics as g
 import math
 
