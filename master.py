@@ -157,41 +157,6 @@ class Player:
         if point:
             bullet = Bullet(self.w,self.right_hand.getCenter().getX(),self.right_hand.getCenter().getY(),point)
 
-
-
-'''
-Got rid of shield
-class Shield:
-    def __init__(self,win,x,y):
-        self.w = win
-        self.x = x
-        self.y = y
-        self.radius = 15
-        self.create()
-        self.activation()
-
-    def create(self):
-        self.body = g.Circle(g.Point(self.x, self.y), self.radius)
-        self.body.setFill('purple')
-        self.body.draw(self.w)
-
-    def picked_up(self): # when player collides with shield,
-                        # shield gets deleted and player gains shielding powers
-        distX = Player.hitbox.getCenter().getX() - self.body.getCenter().getX()
-        distY = Player.hitbox.getCenter().getY() - self.body.getCenter().getY()
-        totDist = math.sqrt((distX**2)+(distY**2))
-        if totDist <= self.radius + Player.playerRadius:
-            return True
-        else:
-            return False
-
-    def activation(self):
-        if self.picked_up():
-            print('yo')
-
-            self.w.after(100,self.body.undraw())
-'''
-
 class Health:
     '''
     Make sure the name of the maze is correct
@@ -202,7 +167,7 @@ class Health:
         self.y = y
         self.length = 300
         self.damaged = False
-        self.mazeName = M1
+        self.mazeName = M2
         self.create()
         self.maintain()
 
@@ -258,7 +223,7 @@ class Bullet:
     def create(self):
         self.body = g.Circle(g.Point(self.x,self.y), self.radius)
         self.body.setFill("black")
-        self.body.draw(w)
+        self.body.draw(self.w)
 
     def determineCollisions(self):
         '''
@@ -299,8 +264,6 @@ class Monster():
     We make it a thread so it moves, and waits, independently of the player
 
     MONSTERS MUST BE DECLARED AFTER PLAYER
-
-    Still can't get the threading to work
     '''
 
 #--------------------------------------
@@ -522,18 +485,117 @@ class Monster():
 
                 self.w.after(100, self.explore)
 
-w = g.GraphWin('CS Project Game', 1250, 700, autoflush = False)
-w.setBackground('white')
-M1 = 5
-P = Player(w, 575, 350)
-H = Health(w, 950, 685)
-monster1 = Monster(200,200,w,'explore')
-monster2 = Monster(50,800,w,'patrol',g.Point(300,300))
+class maze:
+	def __init__(self, lvl):
+		self.lvl = lvl
+		self.game_going = True #is game currently being played, False when game over
+
+		if self.lvl == 2:
+			self.create2()
+
+	def make_boulder(self, ptC):
+		boulder = g.Circle(g.Point(ptC.getX(), ptC.getY()), 25)
+		boulder.setFill('gray')
+		boulder.draw(self.w)
+		return boulder
+
+	def move_boulder_H(self, bould, directionr):#should also include paramaters for (left + right) bounds like 259 and 559 are here
+		#directionr: True when moving right, False when moving left
+		if directionr:
+			#559 is right bound in conditional, 259 is left
+			if bould.getCenter().getX()+25 < 559:
+				bould.move(5, 0)
+			elif bould.getCenter().getX()+25>=559:
+				directionr = False
+		else:
+			if bould.getCenter().getX()-25 > 259:
+				bould.move(-5, 0)
+			elif bould.getCenter().getX()-25<=259:
+				directionr = True
+		self.w.after(4, self.move_boulder_H, bould, directionr)
+
+	def fire_trap(self, pt_topL, pt_topR, pt_bottL, pt_bottR):
+		#pass
+		#use after() to time the on and off
+		self.trap_on = False
+
+		self.trap_on = not self.trap_on
+		self.w.after(5, self.fire_trap, self.trap_on)
+
+	def create2(self):
+
+		w = g.GraphWin('Level 2', 750, 800, autoflush = False)
+		self.w = w
+		#maze is 550 tall x 750 long but the extra
+		#is so u can display things on the side
+
+		self.make_box(g.Point(50, 0), g.Point(250, 100))
+		self.make_box(g.Point(200, 0), g.Point(250, 200))
+		self.make_box(g.Point(0, 200), g.Point(150, 250))
+		self.make_box(g.Point(0, 250), g.Point(50, 350))
+
+		self.make_box(g.Point(100, 350), g.Point(350, 400))
+		#self.make_box(g.Point(300, 300), g.Point(350, 350))
+		self.make_box(g.Point(100, 400), g.Point(200, 450))
+		self.make_box(g.Point(250, 400), g.Point(300, 450))
+
+		self.make_box(g.Point(300, 100), g.Point(350, 200))
+		self.make_box(g.Point(300, 200), g.Point(450, 250))
+		self.make_box(g.Point(400, 0), g.Point(450, 350))
+
+		self.make_box(g.Point(500, 0), g.Point( 750, 100))
+		self.make_box(g.Point(700, 0), g.Point(750, 350))
+
+		self.make_box(g.Point(500, 200), g.Point(650, 250))
+
+		self.make_box(g.Point(0, 400), g.Point(50, 650))
+		self.make_box(g.Point(100, 550), g.Point(250, 600))
+		self.make_box(g.Point(100, 600), g.Point(650, 650))
+		self.make_box(g.Point(350, 500), g.Point(650, 550))
+		self.make_box(g.Point(600, 350), g.Point(650, 500))
+		self.make_box(g.Point(550, 550), g.Point(600, 600))
+
+		#self.make_box(g.Point(350, 450), g.Point(400, 500))
+		#self.make_box(g.Point(400, 400), g.Point(550, 450))
+		self.make_box(g.Point(500, 350), g.Point(550, 400))
+
+		self.make_box(g.Point(700, 400), g.Point(750, 600))
+		self.make_box(g.Point(650, 600), g.Point(750, 650))
+
+
+		bould = self.make_boulder(g.Point(434,450))
+		self.move_boulder_H(bould, True)
+
+		#self.w.getMouse()
+		#self.w.close()
+
+
+
+
+	def line_seg(self, p1, p2):
+		mline = g.Line(g.Point(p1.getX(), p1.getY()), g.Point(p2.getX(), p2.getY()))
+		mline.setWidth(5)
+		mline.draw(self.w)
+
+	def make_box(self, p1, p2):
+		box = g.Rectangle(p1, p2)
+		box.setFill('black')
+		box.draw(self.w)
+
+#w = g.GraphWin('CS Project Game', 1250, 700, autoflush = False)
+#w.setBackground('green')
+
+#M2 is
+M2 = maze(2)
+P = Player(M2.w, 575, 350)
+H = Health(M2.w, 450, 660)
+monster1 = Monster(200,200,M2.w,'explore')
+monster2 = Monster(50,800,M2.w,'patrol',g.Point(300,300))
 
 key = None
 while key != 'q':
-    key = w.checkKey()
+    key = M2.w.checkKey()
     P.control(key)
-    click = w.checkMouse()
+    click = M2.w.checkMouse()
     P.fire(click)
-w.close()
+M2.w.close()
