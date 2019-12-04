@@ -9,34 +9,46 @@ import time
 
 
 class Player:
+    '''
+    This class creates the graphics and basic movement controls of the player.
+    A hitbox was added to interact with the environment. To simply coding, a circular
+    hitbox was created instead of a rectangular hitbox.
+    '''
     def __init__(self,win,x,y):
         self.w = win
         self.x = x
         self.y = y
+        self.playerRadius = 20
+        self.detectionRange = 500
         self.create()
+
 
     def create(self): # draw the player
 
-        self.body = g.Rectangle(g.Point(self.x-20, self.y-35),
-                                g.Point(self.x+20, self.y+25))
-        self.hitbox = g.Rectangle(g.Point(self.x-35, self.y-75),
-                                g.Point(self.x+35, self.y+70))
-        self.left_hand = g.Circle(g.Point(self.x+27, self.y+10), 8)
-        self.right_hand = g.Circle(g.Point(self.x-27, self.y+10), 8)
-        self.left_arm = g.Rectangle(g.Point(self.x-35, self.y-35),
-                                    g.Point(self.x-20, self.y+10))
-        self.right_arm = g.Rectangle(g.Point(self.x+20, self.y-35),
-                                     g.Point(self.x+35, self.y+10))
-        self.left_shoe = g.Circle(g.Point(self.x-10, self.y+60), 10)
-        self.right_shoe = g.Circle(g.Point(self.x+10, self.y+60), 10)
-        self.left_leg = g.Rectangle(g.Point(self.x, self.y+25),
-                                    g.Point(self.x-20, self.y+60))
-        self.right_leg = g.Rectangle(g.Point(self.x, self.y+25),
-                                    g.Point(self.x+20, self.y+60))
-        self.head = g.Circle(g.Point(self.x, self.y-50), 25)
+        self.body = g.Rectangle(g.Point(self.x-10, self.y-17.5),
+                                g.Point(self.x+10, self.y+12.5))
+        #self.hitbox = g.Rectangle(g.Point(self.x-17.5, self.y-37.5),
+                                #g.Point(self.x+17.5, self.y+35))
+        self.hitbox = g.Circle(g.Point(self.x, self.y),self.playerRadius) #circular hitbox
+        self.left_hand = g.Circle(g.Point(self.x+13.5, self.y+5), 4)
+        self.right_hand = g.Circle(g.Point(self.x-13.5, self.y+5), 4)
+        self.left_arm = g.Rectangle(g.Point(self.x-17.5, self.y-17.5),
+                                    g.Point(self.x-10, self.y+5))
+        self.right_arm = g.Rectangle(g.Point(self.x+10, self.y-17.5),
+                                     g.Point(self.x+17.5, self.y+5))
+        self.left_shoe = g.Circle(g.Point(self.x-5, self.y+30), 5)
+        self.right_shoe = g.Circle(g.Point(self.x+5, self.y+30), 5)
+        self.left_leg = g.Rectangle(g.Point(self.x, self.y+12.5),
+                                    g.Point(self.x-10, self.y+30))
+        self.right_leg = g.Rectangle(g.Point(self.x, self.y+12.5),
+                                    g.Point(self.x+10, self.y+30))
+        self.head = g.Circle(g.Point(self.x, self.y-25), 12.5)
+        self.leye = g.Circle(g.Point(self.x-5, self.y-25), 2.5)
+        self.reye = g.Circle(g.Point(self.x+5, self.y-25), 2.5)
+        self.shield = g.Circle(g.Point(self.x, self.y), 37.5)
 
         self.hitbox.setFill('white')
-        self.body.setFill('blue')
+        self.body.setFill('aqua')
         self.left_hand.setFill('orange')
         self.right_hand.setFill('orange')
         self.left_arm.setFill('blue')
@@ -46,8 +58,12 @@ class Player:
         self.left_leg.setFill('brown')
         self.right_leg.setFill('brown')
         self.head.setFill('orange')
+        self.leye.setFill('black')
+        self.reye.setFill('black')
+        self.shield.setFill('pink')
 
-        # self.hitbox.draw(self.w) see hitbox
+        #self.hitbox.draw(self.w) #see hitbox
+        #self.shield.draw(self.w) #see shield
         self.body.draw(self.w)
         self.left_hand.draw(self.w)
         self.right_hand.draw(self.w)
@@ -58,6 +74,10 @@ class Player:
         self.left_leg.draw(self.w)
         self.right_leg.draw(self.w)
         self.head.draw(self.w)
+        self.leye.draw(self.w)
+        self.reye.draw(self.w)
+
+
 
     def control(self, key):
         if key == 'Up':
@@ -72,6 +92,8 @@ class Player:
             self.left_shoe.move(0, -20)
             self.right_shoe.move(0, -20)
             self.head.move(0, -20)
+            self.leye.move(0, -20)
+            self.reye.move(0, -20)
 
         if key == 'Down':
             self.hitbox.move(0, 20)
@@ -85,6 +107,8 @@ class Player:
             self.left_shoe.move(0, 20)
             self.right_shoe.move(0, 20)
             self.head.move(0, 20)
+            self.leye.move(0, 20)
+            self.reye.move(0, 20)
 
         if key == 'Right':
             self.hitbox.move(20, 0)
@@ -98,6 +122,8 @@ class Player:
             self.left_shoe.move(20, 0)
             self.right_shoe.move(20, 0)
             self.head.move(20, 0)
+            self.leye.move(20, 0)
+            self.reye.move(20, 0)
 
         if key == 'Left':
             self.hitbox.move(-20, 0)
@@ -111,6 +137,8 @@ class Player:
             self.left_shoe.move(-20, 0)
             self.right_shoe.move(-20, 0)
             self.head.move(-20, 0)
+            self.leye.move(-20, 0)
+            self.reye.move(-20, 0)
 
         #elif key == 'space':
          #   Bullet(self.w, self.body.getCenter().getX(), self.body.getCenter().getY())
@@ -120,41 +148,49 @@ class Player:
         distY = self.body.getCenter().getY() - other.body.getCenter().getY()
         totDist = math.sqrt((distX**2)+(distY**2))
         #((distX**2)+(distY**2))**(1/2)
-        if totDist <= other.getCenter() + Player.hitbox.getCenter():
-            return True
-        else:
-            return False
+        if totDist <= other.radius + Player.playerRadius:
+            self.body.move(0, 0)
+
+    #if player_collision:
 
     def fire(self,point):
         if point:
             bullet = Bullet(self.w,self.right_hand.getCenter().getX(),self.right_hand.getCenter().getY(),point)
 
 
-    #if player_collision:
 
-
+'''
+Got rid of shield
 class Shield:
     def __init__(self,win,x,y):
         self.w = win
         self.x = x
         self.y = y
+        self.radius = 15
         self.create()
+        self.activation()
 
     def create(self):
-        self.body = g.Circle(g.Point(self.x, self.y), 15)
+        self.body = g.Circle(g.Point(self.x, self.y), self.radius)
         self.body.setFill('purple')
         self.body.draw(self.w)
 
     def picked_up(self): # when player collides with shield,
                         # shield gets deleted and player gains shielding powers
-        distX = Player.body.getCenter().getX() - self.body.getCenter().getX()
-        distY = Player.body.getCenter().getY() - self.body.getCenter().getY()
+        distX = Player.hitbox.getCenter().getX() - self.body.getCenter().getX()
+        distY = Player.hitbox.getCenter().getY() - self.body.getCenter().getY()
         totDist = math.sqrt((distX**2)+(distY**2))
-        if totDist <= self.getCenter() + Player.hitbox.getCenter():
-            Shield.remove()
+        if totDist <= self.radius + Player.playerRadius:
             return True
         else:
             return False
+
+    def activation(self):
+        if self.picked_up():
+            print('yo')
+
+            self.w.after(100,self.body.undraw())
+'''
 
 class Health:
     '''
@@ -257,7 +293,7 @@ class Bullet:
         self.body.move(unitVectorX*self.speed,unitVectorY*self.speed)
         self.determineCollisions()
 
-class Monster:
+class Monster():
     '''
     This is the parent monster class that does all the generic monster things
     We make it a thread so it moves, and waits, independently of the player
@@ -285,13 +321,14 @@ class Monster:
         self.behavior = behavior
         #change to the name of the player object that is created
         self.playerName = P
-        self.playerRadius = 40
+        self.playerRadius = P.playerRadius
         self.detectionRange = 500
-        self.radius = 40
+        self.radius = 20
         self.speed = 5 #distance travelled per update
         self.patrolP2 = patrolP2
         self.isShot = False
         self.stunTime = 2000 #ms
+        self.parts = []
         self.create()
 
     def create(self):
@@ -305,11 +342,15 @@ class Monster:
         self.circle4=g.Circle(g.Point(self.x+self.radius*3/4,self.y+self.radius),self.radius/4)
         self.rectangle=g.Rectangle(
             g.Point(self.x-self.radius,self.y),g.Point(self.x+self.radius,self.y+self.radius))
+        self.Leye = g.Circle(g.Point(self.x-self.radius*3/8,self.y),self.radius/3)
+        self.Reye = g.Circle(g.Point(self.x+self.radius*3/8,self.y),self.radius/3)
 
-        parts = [self.body, self.rectangle, self.circle1, self.circle2, self.circle3, self.circle4]
-        for part in parts:
+        self.parts = [self.body, self.rectangle, self.circle1, self.circle2, self.circle3, self.circle4, self.Leye, self.Reye]
+        for part in self.parts:
             part.setFill('grey')
             part.setOutline('grey')
+            if part == self.Leye or part == self.Reye:
+                part.setFill('black')
             part.draw(self.w)
 
         if self.behavior =='wait':
@@ -327,8 +368,7 @@ class Monster:
 #behavior-related functions
 #--------------------------------------
     def move(self, dx, dy):
-        parts = [self.body, self.rectangle, self.circle1, self.circle2, self.circle3, self.circle4]
-        for part in parts:
+        for part in self.parts:
             part.move(dx,dy)
 
     def playerInRange(self):
@@ -482,11 +522,9 @@ class Monster:
 
                 self.w.after(100, self.explore)
 
-
 w = g.GraphWin('CS Project Game', 1250, 700, autoflush = False)
-w.setBackground('white')
+w.setBackground('green')
 M1 = 5
-S = Shield(w, 200, 100)
 P = Player(w, 575, 350)
 H = Health(w, 950, 685)
 monster1 = Monster(200,200,w,'explore')
