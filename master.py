@@ -43,8 +43,11 @@ class Player:
         self.right_leg = g.Rectangle(g.Point(self.x, self.y+12.5),
                                     g.Point(self.x+10, self.y+30))
         self.head = g.Circle(g.Point(self.x, self.y-25), 12.5)
-        self.leye = g.Circle(g.Point(self.x-5, self.y-25), 2.5)
-        self.reye = g.Circle(g.Point(self.x+5, self.y-25), 2.5)
+        self.leye = g.Circle(g.Point(self.x-5, self.y-25), 3)
+        self.reye = g.Circle(g.Point(self.x+5, self.y-25), 3)
+        self.lpup = g.Circle(g.Point(self.x-5, self.y-25), 1)
+        self.rpup = g.Circle(g.Point(self.x+5, self.y-25), 1)
+        self.mouth = g.Circle(g.Point(self.x, self.y-18), 3)
         self.shield = g.Circle(g.Point(self.x, self.y), 37.5)
 
         self.hitbox.setFill('white')
@@ -58,8 +61,11 @@ class Player:
         self.left_leg.setFill('brown')
         self.right_leg.setFill('brown')
         self.head.setFill('orange')
-        self.leye.setFill('black')
-        self.reye.setFill('black')
+        self.leye.setFill('white')
+        self.reye.setFill('white')
+        self.lpup.setFill('black')
+        self.rpup.setFill('black')
+        self.mouth.setFill('black')
         self.shield.setFill('pink')
 
         #self.hitbox.draw(self.w) #see hitbox
@@ -76,6 +82,9 @@ class Player:
         self.head.draw(self.w)
         self.leye.draw(self.w)
         self.reye.draw(self.w)
+        self.lpup.draw(self.w)
+        self.rpup.draw(self.w)
+        self.mouth.draw(self.w)
 
 
 
@@ -94,6 +103,9 @@ class Player:
             self.head.move(0, -20)
             self.leye.move(0, -20)
             self.reye.move(0, -20)
+            self.lpup.move(0, -20)
+            self.rpup.move(0, -20)
+            self.mouth.move(0, -20)
 
         if key == 'Down':
             self.hitbox.move(0, 20)
@@ -109,6 +121,9 @@ class Player:
             self.head.move(0, 20)
             self.leye.move(0, 20)
             self.reye.move(0, 20)
+            self.lpup.move(0, 20)
+            self.rpup.move(0, 20)
+            self.mouth.move(0, 20)
 
         if key == 'Right':
             self.hitbox.move(20, 0)
@@ -124,6 +139,9 @@ class Player:
             self.head.move(20, 0)
             self.leye.move(20, 0)
             self.reye.move(20, 0)
+            self.lpup.move(20, 0)
+            self.rpup.move(20, 0)
+            self.mouth.move(20, 0)
 
         if key == 'Left':
             self.hitbox.move(-20, 0)
@@ -139,6 +157,9 @@ class Player:
             self.head.move(-20, 0)
             self.leye.move(-20, 0)
             self.reye.move(-20, 0)
+            self.lpup.move(-20, 0)
+            self.rpup.move(-20, 0)
+            self.mouth.move(-20, 0)
 
         #elif key == 'space':
          #   Bullet(self.w, self.body.getCenter().getX(), self.body.getCenter().getY())
@@ -294,7 +315,7 @@ class Monster():
         self.parts = []
         self.create()
 
-    def create(self):
+     def create(self):
         '''
         draw the sprite and call the proper behavior
         '''
@@ -305,14 +326,18 @@ class Monster():
         self.circle4=g.Circle(g.Point(self.x+self.radius*3/4,self.y+self.radius),self.radius/4)
         self.rectangle=g.Rectangle(
             g.Point(self.x-self.radius,self.y),g.Point(self.x+self.radius,self.y+self.radius))
-        self.Leye = g.Circle(g.Point(self.x-self.radius*3/8,self.y),self.radius/3)
-        self.Reye = g.Circle(g.Point(self.x+self.radius*3/8,self.y),self.radius/3)
+        self.Leye = g.Circle(g.Point(self.x-self.radius*3/8,self.y), self.radius/3)
+        self.Reye = g.Circle(g.Point(self.x+self.radius*3/8,self.y), self.radius/3)
+        self.Lpup = g.Circle(g.Point(self.x-self.radius*3/8,self.y),self.radius/6)
+        self.Rpup = g.Circle(g.Point(self.x+self.radius*3/8,self.y),self.radius/6)
 
-        self.parts = [self.body, self.rectangle, self.circle1, self.circle2, self.circle3, self.circle4, self.Leye, self.Reye]
+        self.parts = [self.body, self.rectangle, self.circle1, self.circle2, self.circle3, self.circle4, self.Leye, self.Reye, self.Lpup, self.Rpup]
         for part in self.parts:
             part.setFill('grey')
             part.setOutline('grey')
             if part == self.Leye or part == self.Reye:
+                part.setFill('white')
+            if part == self.Lpup or part == self.Rpup:
                 part.setFill('black')
             part.draw(self.w)
 
