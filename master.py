@@ -484,7 +484,7 @@ class Monster:
 
 
 w = g.GraphWin('CS Project Game', 1250, 700, autoflush = False)
-w.setBackground('green')
+w.setBackground('white')
 M1 = 5
 S = Shield(w, 200, 100)
 P = Player(w, 575, 350)
