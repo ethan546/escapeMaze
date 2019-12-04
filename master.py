@@ -156,19 +156,40 @@ class Shield:
         else:
             return False
 
-
 class Health:
+    '''
+    Make sure the name of the maze is correct
+    '''
     def __init__(self,win,x,y):
         self.w = win
         self.x = x
         self.y = y
+        self.length = 300
+        self.damaged = False
+        self.mazeName = M1
         self.create()
+        self.maintain()
+
 
     def create(self):
-        self.body = g.Rectangle(g.Point(self.x-140, self.y-10),
-                                g.Point(self.x+140, self.y+10))
+        self.body = g.Rectangle(g.Point(self.x, self.y-10),
+                                g.Point(self.x+self.length, self.y+10))
         self.body.setFill('red')
         self.body.draw(self.w)
+
+    def maintain(self):
+        '''
+        This function makes sure the bar changes when we take damage
+        '''
+        if self.damaged:
+            self.length -= 30
+            self.body.undraw()
+            self.create()
+            self.damaged = False
+            if self.length == 0:
+                self.mazeName.game_going = False
+        self.w.after(100, self.maintain)
+
 
     def loseHealth(self):
         if player_collision:
@@ -334,6 +355,7 @@ class Monster:
         yDist = self.playerName.body.getCenter().getY()-self.body.getCenter().getY()
         totalDist = math.sqrt(xDist**2 + yDist**2)
         if totalDist <= self.radius+self.playerRadius:
+            H.damaged = True
             return True
         else:
             return False
@@ -463,9 +485,10 @@ class Monster:
 
 w = g.GraphWin('CS Project Game', 1250, 700, autoflush = False)
 w.setBackground('green')
+M1 = 5
 S = Shield(w, 200, 100)
 P = Player(w, 575, 350)
-H = Health(w, 1100, 685)
+H = Health(w, 950, 685)
 monster1 = Monster(200,200,w,'explore')
 monster2 = Monster(50,800,w,'patrol',g.Point(300,300))
 
