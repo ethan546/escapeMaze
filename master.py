@@ -315,7 +315,7 @@ class Monster():
         self.parts = []
         self.create()
 
-     def create(self):
+    def create(self):
         '''
         draw the sprite and call the proper behavior
         '''
