@@ -523,7 +523,7 @@ class Monster():
                 self.w.after(100, self.explore)
 
 w = g.GraphWin('CS Project Game', 1250, 700, autoflush = False)
-w.setBackground('green')
+w.setBackground('white')
 M1 = 5
 P = Player(w, 575, 350)
 H = Health(w, 950, 685)
