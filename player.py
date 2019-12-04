@@ -12,14 +12,14 @@ import math
 class Player:
     '''
     This class creates the graphics and basic movement controls of the player.
-    A hitbox was added to interact with the environment. To simply coding, a circular
-    hitbox was created instead of a rectangular hitbox. 
+    A hitbox was added to interact with the environment. To simplify coding, 
+    a circular hitbox was created instead of a rectangular hitbox. 
     '''
     def __init__(self,win,x,y):
         self.w = win
         self.x = x
         self.y = y
-        self.playerRadius = 35 
+        self.hitboxRadius = 35 
         self.detectionRange = 500
         self.create()
         
@@ -28,9 +28,7 @@ class Player:
         
         self.body = g.Rectangle(g.Point(self.x-10, self.y-17.5), 
                                 g.Point(self.x+10, self.y+12.5))
-        #self.hitbox = g.Rectangle(g.Point(self.x-17.5, self.y-37.5), 
-                                #g.Point(self.x+17.5, self.y+35))
-        self.hitbox = g.Circle(g.Point(self.x, self.y),self.playerRadius) #circular hitbox
+        self.hitbox = g.Circle(g.Point(self.x, self.y),self.hitboxRadius) 
         self.left_hand = g.Circle(g.Point(self.x+13.5, self.y+5), 4)
         self.right_hand = g.Circle(g.Point(self.x-13.5, self.y+5), 4)
         self.left_arm = g.Rectangle(g.Point(self.x-17.5, self.y-17.5), 
@@ -44,8 +42,11 @@ class Player:
         self.right_leg = g.Rectangle(g.Point(self.x, self.y+12.5), 
                                     g.Point(self.x+10, self.y+30))
         self.head = g.Circle(g.Point(self.x, self.y-25), 12.5)
-        self.leye = g.Circle(g.Point(self.x-5, self.y-25), 2.5)
-        self.reye = g.Circle(g.Point(self.x+5, self.y-25), 2.5)
+        self.leye = g.Circle(g.Point(self.x-5, self.y-25), 3)
+        self.reye = g.Circle(g.Point(self.x+5, self.y-25), 3)
+        self.lpup = g.Circle(g.Point(self.x-5, self.y-25), 1)
+        self.rpup = g.Circle(g.Point(self.x+5, self.y-25), 1)
+        self.mouth = g.Circle(g.Point(self.x, self.y-18), 3)
         self.shield = g.Circle(g.Point(self.x, self.y), 37.5)
         
         self.hitbox.setFill('white')
@@ -59,8 +60,11 @@ class Player:
         self.left_leg.setFill('brown')
         self.right_leg.setFill('brown')
         self.head.setFill('orange')
-        self.leye.setFill('black')
-        self.reye.setFill('black')
+        self.leye.setFill('white')
+        self.reye.setFill('white')
+        self.lpup.setFill('black')
+        self.rpup.setFill('black')
+        self.mouth.setFill('black')
         self.shield.setFill('pink')
         
         #self.hitbox.draw(self.w) #see hitbox
@@ -77,6 +81,9 @@ class Player:
         self.head.draw(self.w)
         self.leye.draw(self.w)
         self.reye.draw(self.w)
+        self.lpup.draw(self.w)
+        self.rpup.draw(self.w)
+        self.mouth.draw(self.w)
 
         
         
@@ -95,7 +102,10 @@ class Player:
             self.head.move(0, -20)
             self.leye.move(0, -20)
             self.reye.move(0, -20)
-            
+            self.lpup.move(0, -20)
+            self.rpup.move(0, -20)
+            self.mouth.move(0, -20)
+
         if key == 'Down':
             self.hitbox.move(0, 20)
             self.body.move(0, 20)
@@ -110,7 +120,10 @@ class Player:
             self.head.move(0, 20)
             self.leye.move(0, 20)
             self.reye.move(0, 20)
-            
+            self.lpup.move(0, 20)
+            self.rpup.move(0, 20)
+            self.mouth.move(0, 20)
+
         if key == 'Right':
             self.hitbox.move(20, 0)
             self.body.move(20, 0)
@@ -125,7 +138,10 @@ class Player:
             self.head.move(20, 0)
             self.leye.move(20, 0)
             self.reye.move(20, 0)
-            
+            self.lpup.move(20, 0)
+            self.rpup.move(20, 0)
+            self.mouth.move(20, 0)
+
         if key == 'Left':
             self.hitbox.move(-20, 0)
             self.body.move(-20, 0)
@@ -140,6 +156,9 @@ class Player:
             self.head.move(-20, 0)
             self.leye.move(-20, 0)
             self.reye.move(-20, 0)
+            self.lpup.move(-20, 0)
+            self.rpup.move(-20, 0)
+            self.mouth.move(-20, 0)
             
         #elif key == 'space':
          #   Bullet(self.w, self.body.getCenter().getX(), self.body.getCenter().getY())
@@ -149,7 +168,7 @@ class Player:
         distY = self.body.getCenter().getY() - other.body.getCenter().getY()
         totDist = math.sqrt((distX**2)+(distY**2))
         #((distX**2)+(distY**2))**(1/2)
-        if totDist <= other.radius + Player.playerRadius:
+        if totDist <= other.radius + Player.hitboxRadius:
             self.body.move(0, 0)
         
     #if player_collision:
@@ -179,7 +198,7 @@ class Shield:
         distX = Player.hitbox.getCenter().getX() - self.body.getCenter().getX()
         distY = Player.hitbox.getCenter().getY() - self.body.getCenter().getY()
         totDist = math.sqrt((distX**2)+(distY**2))
-        if totDist <= self.radius + Player.playerRadius:
+        if totDist <= self.radius + Player.hitboxRadius:
             return True
         else:
             return False
@@ -191,9 +210,11 @@ class Shield:
             self.w.after(100,self.body.undraw())
 '''
             
-        
     
 class Health:
+    '''
+    
+    '''
     def __init__(self,win,x,y):
         self.w = win
         self.x = x
@@ -221,15 +242,13 @@ class Health:
             self.w.after(100, self.maintain)
     
     
-            
-            
-        
-    
 
-w = g.GraphWin('CS Project Game', 1250, 700, autoflush = False) # autoflush equals 
-                                                                # False for smoother movements
+w = g.GraphWin('CS Project Game', 1250, 700, autoflush = False) 
+'''
+autoflush equals False for smoother movements
+'''
 w.setBackground('white')
-# S = Shield(w, 200, 100)
+# S = Shield(w, 200, 100) got rid of shield
 P = Player(w, 575, 350)
 H = Health(w, 950, 685)
 key = None
