@@ -20,6 +20,7 @@ class Player:
         self.y = y
         self.playerRadius = 20
         self.detectionRange = 500
+        self.mazeName = M2
         self.create()
 
 
@@ -27,9 +28,9 @@ class Player:
 
         self.body = g.Rectangle(g.Point(self.x-10, self.y-17.5),
                                 g.Point(self.x+10, self.y+12.5))
-        #self.hitbox = g.Rectangle(g.Point(self.x-17.5, self.y-37.5),
-                                #g.Point(self.x+17.5, self.y+35))
-        self.hitbox = g.Circle(g.Point(self.x, self.y),self.playerRadius) #circular hitbox
+        self.hitbox = g.Rectangle(g.Point(self.x-17.5, self.y-37.5),
+                                g.Point(self.x+17.5, self.y+35))
+        #self.hitbox = g.Circle(g.Point(self.x, self.y),self.playerRadius) #circular hitbox
         self.left_hand = g.Circle(g.Point(self.x+13.5, self.y+5), 4)
         self.right_hand = g.Circle(g.Point(self.x-13.5, self.y+5), 4)
         self.left_arm = g.Rectangle(g.Point(self.x-17.5, self.y-17.5),
@@ -90,76 +91,100 @@ class Player:
 
     def control(self, key):
         if key == 'Up':
-            self.hitbox.move(0, -20)
-            self.body.move(0, -20)
-            self.left_hand.move(0, -20)
-            self.right_hand.move(0, -20)
-            self.left_arm.move(0, -20)
-            self.right_arm.move(0, -20)
-            self.left_leg.move(0, -20)
-            self.right_leg.move(0, -20)
-            self.left_shoe.move(0, -20)
-            self.right_shoe.move(0, -20)
-            self.head.move(0, -20)
-            self.leye.move(0, -20)
-            self.reye.move(0, -20)
-            self.lpup.move(0, -20)
-            self.rpup.move(0, -20)
-            self.mouth.move(0, -20)
+            canMove = True
+            for tuple in self.mazeName.listOfWallPoints:
+                if tuple[0].getX() < self.hitbox.getCenter().getX() < tuple[1].getX():
+                    if tuple[0].getY() < self.hitbox.getP1().getY()-20 < tuple[1].getY():
+                        canMove = False
+            if canMove:
+                self.hitbox.move(0, -20)
+                self.body.move(0, -20)
+                self.left_hand.move(0, -20)
+                self.right_hand.move(0, -20)
+                self.left_arm.move(0, -20)
+                self.right_arm.move(0, -20)
+                self.left_leg.move(0, -20)
+                self.right_leg.move(0, -20)
+                self.left_shoe.move(0, -20)
+                self.right_shoe.move(0, -20)
+                self.head.move(0, -20)
+                self.leye.move(0, -20)
+                self.reye.move(0, -20)
+                self.lpup.move(0, -20)
+                self.rpup.move(0, -20)
+                self.mouth.move(0, -20)
 
         if key == 'Down':
-            self.hitbox.move(0, 20)
-            self.body.move(0, 20)
-            self.left_hand.move(0, 20)
-            self.right_hand.move(0, 20)
-            self.left_arm.move(0, 20)
-            self.right_arm.move(0, 20)
-            self.left_leg.move(0, 20)
-            self.right_leg.move(0, 20)
-            self.left_shoe.move(0, 20)
-            self.right_shoe.move(0, 20)
-            self.head.move(0, 20)
-            self.leye.move(0, 20)
-            self.reye.move(0, 20)
-            self.lpup.move(0, 20)
-            self.rpup.move(0, 20)
-            self.mouth.move(0, 20)
+            canMove = True
+            for tuple in self.mazeName.listOfWallPoints:
+                if tuple[0].getX() < self.hitbox.getCenter().getX() < tuple[1].getX():
+                    if tuple[0].getY() < self.hitbox.getP2().getY()+20 < tuple[1].getY():
+                        canMove = False
+            if canMove:
+                self.hitbox.move(0, 20)
+                self.body.move(0, 20)
+                self.left_hand.move(0, 20)
+                self.right_hand.move(0, 20)
+                self.left_arm.move(0, 20)
+                self.right_arm.move(0, 20)
+                self.left_leg.move(0, 20)
+                self.right_leg.move(0, 20)
+                self.left_shoe.move(0, 20)
+                self.right_shoe.move(0, 20)
+                self.head.move(0, 20)
+                self.leye.move(0, 20)
+                self.reye.move(0, 20)
+                self.lpup.move(0, 20)
+                self.rpup.move(0, 20)
+                self.mouth.move(0, 20)
 
         if key == 'Right':
-            self.hitbox.move(20, 0)
-            self.body.move(20, 0)
-            self.left_hand.move(20, 0)
-            self.right_hand.move(20, 0)
-            self.left_arm.move(20, 0)
-            self.right_arm.move(20, 0)
-            self.left_leg.move(20, 0)
-            self.right_leg.move(20, 0)
-            self.left_shoe.move(20, 0)
-            self.right_shoe.move(20, 0)
-            self.head.move(20, 0)
-            self.leye.move(20, 0)
-            self.reye.move(20, 0)
-            self.lpup.move(20, 0)
-            self.rpup.move(20, 0)
-            self.mouth.move(20, 0)
+            canMove = True
+            for tuple in self.mazeName.listOfWallPoints:
+                if tuple[0].getX() < self.hitbox.getP2().getX() +20 < tuple[1].getX():
+                    if tuple[0].getY() < self.hitbox.getCenter().getY() < tuple[1].getY():
+                        canMove = False
+            if canMove:
+                self.hitbox.move(20, 0)
+                self.body.move(20, 0)
+                self.left_hand.move(20, 0)
+                self.right_hand.move(20, 0)
+                self.left_arm.move(20, 0)
+                self.right_arm.move(20, 0)
+                self.left_leg.move(20, 0)
+                self.right_leg.move(20, 0)
+                self.left_shoe.move(20, 0)
+                self.right_shoe.move(20, 0)
+                self.head.move(20, 0)
+                self.leye.move(20, 0)
+                self.reye.move(20, 0)
+                self.lpup.move(20, 0)
+                self.rpup.move(20, 0)
+                self.mouth.move(20, 0)
 
         if key == 'Left':
-            self.hitbox.move(-20, 0)
-            self.body.move(-20, 0)
-            self.left_hand.move(-20, 0)
-            self.right_hand.move(-20, 0)
-            self.left_arm.move(-20, 0)
-            self.right_arm.move(-20, 0)
-            self.left_leg.move(-20, 0)
-            self.right_leg.move(-20, 0)
-            self.left_shoe.move(-20, 0)
-            self.right_shoe.move(-20, 0)
-            self.head.move(-20, 0)
-            self.leye.move(-20, 0)
-            self.reye.move(-20, 0)
-            self.lpup.move(-20, 0)
-            self.rpup.move(-20, 0)
-            self.mouth.move(-20, 0)
+            canMove = True
+            for tuple in self.mazeName.listOfWallPoints:
+                if tuple[0].getX() < self.hitbox.getP1().getX() -20 < tuple[1].getX():
+                    if tuple[0].getY() < self.hitbox.getCenter().getY() < tuple[1].getY():
+                        canMove = False
+            if canMove:
+                self.hitbox.move(-20, 0)
+                self.body.move(-20, 0)
+                self.left_hand.move(-20, 0)
+                self.right_hand.move(-20, 0)
+                self.left_arm.move(-20, 0)
+                self.right_arm.move(-20, 0)
+                self.left_leg.move(-20, 0)
+                self.right_leg.move(-20, 0)
+                self.left_shoe.move(-20, 0)
+                self.right_shoe.move(-20, 0)
+                self.head.move(-20, 0)
+                self.leye.move(-20, 0)
+                self.reye.move(-20, 0)
+                self.lpup.move(-20, 0)
+                self.rpup.move(-20, 0)
+                self.mouth.move(-20, 0)
 
         #elif key == 'space':
          #   Bullet(self.w, self.body.getCenter().getX(), self.body.getCenter().getY())
@@ -339,10 +364,14 @@ class Monster():
         self.Lpup = g.Circle(g.Point(self.x-self.radius*3/8,self.y),self.radius/6)
         self.Rpup = g.Circle(g.Point(self.x+self.radius*3/8,self.y),self.radius/6)
 
+        colorList = ['red', 'pink', 'cyan', 'orange']
+        color = colorList[random.randint(0,3)]
+
         self.parts = [self.body, self.rectangle, self.circle1, self.circle2, self.circle3, self.circle4, self.Leye, self.Reye, self.Lpup, self.Rpup]
         for part in self.parts:
-            part.setFill('grey')
-            part.setOutline('grey')
+
+            part.setFill(color)
+            part.setOutline(color)
             if part == self.Leye or part == self.Reye:
                 part.setFill('white')
             if part == self.Lpup or part == self.Rpup:
