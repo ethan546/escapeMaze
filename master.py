@@ -537,7 +537,7 @@ class maze:
 				bould.move(-5, 0)
 			elif bould.getCenter().getX()-25<=259:
 				directionr = True
-		self.w.after(4, self.move_boulder_H, bould, directionr)
+		self.w.after(100, self.move_boulder_H, bould, directionr)
 
 	def fire_trap(self, pt_topL, pt_topR, pt_bottL, pt_bottR):
 		#pass
