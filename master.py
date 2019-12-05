@@ -236,6 +236,7 @@ class Bullet:
         self.yDist = point.getY()-y
         self.speed = 10
         self.radius = 10
+        self.mazeName = M2
         #make sure the list of monsters is updated
         self.listOfMonsters = [monster1,monster2]
         self.create()
@@ -261,6 +262,13 @@ class Bullet:
                 monster.isShot = True
                 self.body.undraw()
                 collision = True
+
+        #check if we hit a wall
+        for tuple in self.mazeName.listOfWallPoints:
+            if tuple[0].getX() < self.body.getCenter().getX() < tuple[1].getX():
+                if tuple[0].getY() < self.body.getCenter().getY() < tuple[1].getY():
+                    self.body.undraw()
+                    collision = True
 
         #check if off map
         if self.body.getCenter().getX()<0 or self.body.getCenter().getX()>self.w.getWidth() or self.body.getCenter().getY()<0 or self.body.getCenter().getY()>self.w.getHeight():
@@ -514,7 +522,7 @@ class maze:
 	def __init__(self, lvl):
 		self.lvl = lvl
 		self.game_going = True #is game currently being played, False when game over
-
+		self.listOfWallPoints = []
 		if self.lvl == 2:
 			self.create2()
 
@@ -546,6 +554,11 @@ class maze:
 
 		self.trap_on = not self.trap_on
 		self.w.after(5, self.fire_trap, self.trap_on)
+
+
+
+
+
 
 	def create2(self):
 
@@ -588,14 +601,10 @@ class maze:
 		self.make_box(g.Point(650, 600), g.Point(750, 650))
 
 
-		bould = self.make_boulder(g.Point(434,450))
+		bould = self.make_boulder(g.Point(434,484))
 		self.move_boulder_H(bould, True)
 
-		#self.w.getMouse()
-		#self.w.close()
-
-
-
+		#removed the w.close() here
 
 	def line_seg(self, p1, p2):
 		mline = g.Line(g.Point(p1.getX(), p1.getY()), g.Point(p2.getX(), p2.getY()))
@@ -606,11 +615,12 @@ class maze:
 		box = g.Rectangle(p1, p2)
 		box.setFill('black')
 		box.draw(self.w)
+		#add this stuff so our bullet and character can detect walls
+		self.listOfWallPoints.append((p1,p2))
 
 #w = g.GraphWin('CS Project Game', 1250, 700, autoflush = False)
 #w.setBackground('green')
 
-#M2 is
 M2 = maze(2)
 P = Player(M2.w, 575, 350)
 H = Health(M2.w, 450, 660)
