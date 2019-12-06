@@ -96,6 +96,12 @@ class Player:
                 if tuple[0].getX() < self.hitbox.getP1().getX() < tuple[1].getX() or tuple[0].getX() < self.hitbox.getP2().getX() < tuple[1].getX():
                     if tuple[0].getY() < self.hitbox.getP1().getY()-20 < tuple[1].getY():
                         canMove = False
+            for tuple in self.mazeName.listOfTrapPoints:
+                if tuple[0].getX() < self.hitbox.getP1().getX() < tuple[1].getX() or tuple[0].getX() < self.hitbox.getP2().getX() < tuple[1].getX():
+                    if tuple[0].getY() < self.hitbox.getP1().getY()-20 < tuple[1].getY():
+                    	if tuple[2].trap_on == True:
+                    		H.damaged = True
+	    	
             if self.hitbox.getP1().getY() -20 < 0:
                 canMove = False
             if canMove:
@@ -122,6 +128,11 @@ class Player:
                 if tuple[0].getX() < self.hitbox.getP1().getX() < tuple[1].getX() or tuple[0].getX() < self.hitbox.getP2().getX() < tuple[1].getX():
                     if tuple[0].getY() < self.hitbox.getP2().getY()+20 < tuple[1].getY():
                         canMove = False
+            for tuple in self.mazeName.listOfTrapPoints:
+                if tuple[0].getX() < self.hitbox.getP1().getX() < tuple[1].getX() or tuple[0].getX() < self.hitbox.getP2().getX() < tuple[1].getX():
+                    if tuple[0].getY() < self.hitbox.getP2().getY()+20 < tuple[1].getY():
+                    	if tuple[2].trap_on == True:
+                        	H.damaged = True
             if self.hitbox.getP2().getY() +20 > self.w.getHeight():
                 canMove = False
             if canMove:
@@ -148,6 +159,11 @@ class Player:
                 if tuple[0].getX() < self.hitbox.getP2().getX() +20 < tuple[1].getX():
                     if tuple[0].getY() < self.hitbox.getP1().getY() < tuple[1].getY() or tuple[0].getY() < self.hitbox.getP2().getY() < tuple[1].getY():
                         canMove = False
+            for tuple in self.mazeName.listOfTrapPoints:
+                if tuple[0].getX() < self.hitbox.getP2().getX() +20 < tuple[1].getX():
+                    if tuple[0].getY() < self.hitbox.getP1().getY() < tuple[1].getY() or tuple[0].getY() < self.hitbox.getP2().getY() < tuple[1].getY():
+                        if tuple[2].trap_on == True:
+                        	H.damaged = True
             if self.hitbox.getP2().getX() +20 > self.w.getWidth():
                 canMove = False
             if canMove:
@@ -174,6 +190,11 @@ class Player:
                 if tuple[0].getX() < self.hitbox.getP1().getX() -20 < tuple[1].getX():
                     if tuple[0].getY() < self.hitbox.getP1().getY() < tuple[1].getY() or tuple[0].getY() < self.hitbox.getP2().getY() < tuple[1].getY():
                         canMove = False
+            for tuple in self.mazeName.listOfTrapPoints:
+                if tuple[0].getX() < self.hitbox.getP1().getX() -20 < tuple[1].getX():
+                    if tuple[0].getY() < self.hitbox.getP1().getY() < tuple[1].getY() or tuple[0].getY() < self.hitbox.getP2().getY() < tuple[1].getY():
+                        if tuple[2].trap_on == True:
+                        	H.damaged = True
             if self.hitbox.getP1().getX() -20 < 0:
                 canMove = False
             if canMove:
