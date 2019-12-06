@@ -96,6 +96,8 @@ class Player:
                 if tuple[0].getX() < self.hitbox.getP1().getX() < tuple[1].getX() or tuple[0].getX() < self.hitbox.getP2().getX() < tuple[1].getX():
                     if tuple[0].getY() < self.hitbox.getP1().getY()-20 < tuple[1].getY():
                         canMove = False
+            if self.hitbox.getP1().getY() -20 < 0:
+                canMove = False
             if canMove:
                 self.hitbox.move(0, -20)
                 self.body.move(0, -20)
@@ -120,6 +122,8 @@ class Player:
                 if tuple[0].getX() < self.hitbox.getP1().getX() < tuple[1].getX() or tuple[0].getX() < self.hitbox.getP2().getX() < tuple[1].getX():
                     if tuple[0].getY() < self.hitbox.getP2().getY()+20 < tuple[1].getY():
                         canMove = False
+            if self.hitbox.getP2().getY() +20 > self.w.getHeight():
+                canMove = False
             if canMove:
                 self.hitbox.move(0, 20)
                 self.body.move(0, 20)
@@ -144,6 +148,8 @@ class Player:
                 if tuple[0].getX() < self.hitbox.getP2().getX() +20 < tuple[1].getX():
                     if tuple[0].getY() < self.hitbox.getP1().getY() < tuple[1].getY() or tuple[0].getY() < self.hitbox.getP2().getY() < tuple[1].getY():
                         canMove = False
+            if self.hitbox.getP2().getX() +20 > self.w.getWidth():
+                canMove = False
             if canMove:
                 self.hitbox.move(20, 0)
                 self.body.move(20, 0)
@@ -168,6 +174,8 @@ class Player:
                 if tuple[0].getX() < self.hitbox.getP1().getX() -20 < tuple[1].getX():
                     if tuple[0].getY() < self.hitbox.getP1().getY() < tuple[1].getY() or tuple[0].getY() < self.hitbox.getP2().getY() < tuple[1].getY():
                         canMove = False
+            if self.hitbox.getP1().getX() -20 < 0:
+                canMove = False
             if canMove:
                 self.hitbox.move(-20, 0)
                 self.body.move(-20, 0)
@@ -263,7 +271,12 @@ class Bullet:
         self.radius = 10
         self.mazeName = M2
         #make sure the list of monsters is updated
-        self.listOfMonsters = [monster1,monster2]
+        if lvl == 1:
+            self.listOfMonsters = [monster1,monster2]
+        elif lvl == 2:
+            self.listOfMonsters = [monster1,monster2,monster3]
+        elif lvl == 3:
+            self.listOfMonsters = [monster1,monster2,monster3,monster4]
         self.create()
         self.move()
 
@@ -339,7 +352,7 @@ class Monster:
         #change to the name of the player object that is created
         self.playerName = P
         self.playerRadius = P.playerRadius
-        self.detectionRange = 500
+        self.detectionRange = 300
         self.radius = 20
         self.speed = 5 #distance travelled per update
         self.patrolP2 = patrolP2
@@ -798,19 +811,51 @@ class maze:
 		box.setFill('black')
 		box.draw(self.w)
 		self.listOfWallPoints.append((p1,p2))
-		
 #w = g.GraphWin('CS Project Game', 1250, 700, autoflush = False)
 #w.setBackground('green')
 
-lvl = 2
+global lvl
+lvl = 3
 
+if lvl == 1:
+    M2 = maze(1)
+    P = Player(M2.w, 500, 550)
+    H = Health(M2.w, 0, 590)
+    monster1 = Monster(25,373,M2.w,'explore')
+    monster2 = Monster(200,25,M2.w,'explore',g.Point(300,300))
+
+    key = None
+    while key != 'q':
+        key = M2.w.checkKey()
+        P.control(key)
+        click = M2.w.checkMouse()
+        P.fire(click)
+    M2.w.close()
 
 if lvl == 2:
     M2 = maze(2)
-    P = Player(M2.w, 575, 350)
-    H = Health(M2.w, 450, 660)
-    monster1 = Monster(200,200,M2.w,'explore')
-    monster2 = Monster(50,800,M2.w,'patrol',g.Point(300,300))
+    P = Player(M2.w, 575, 600)
+    H = Health(M2.w, 0, 690)
+    monster1 = Monster(25,373,M2.w,'explore')
+    monster2 = Monster(725,373,M2.w,'wait',g.Point(300,300))
+    monster3 = Monster(475,25,M2.w,'patrol',g.Point(475,226))
+
+    key = None
+    while key != 'q':
+        key = M2.w.checkKey()
+        P.control(key)
+        click = M2.w.checkMouse()
+        P.fire(click)
+    M2.w.close()
+
+if lvl == 3:
+    M2 = maze(3)
+    P = Player(M2.w, 575, 600)
+    H = Health(M2.w, 0, 690)
+    monster1 = Monster(25,423,M2.w,'wait')
+    monster2 = Monster(925,423,M2.w,'chase')
+    monster3 = Monster(575,25,M2.w,'explore')
+    monster4 = Monster(75,100,M2.w,'patrol',g.Point(301,100))
 
     key = None
     while key != 'q':
