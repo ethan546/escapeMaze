@@ -917,7 +917,7 @@ if lvl == 2:
 
 if lvl == 3:
     M2 = maze(lvl)
-    P = Player(M2.w, 575, 600)
+    P = Player(M2.w, 775, 600)
     H = Health(M2.w, 0, 690)
     monster1 = Monster(25,423,M2.w,'wait')
     monster2 = Monster(925,423,M2.w,'chase')
