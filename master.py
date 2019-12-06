@@ -101,7 +101,7 @@ class Player:
                     if tuple[0].getY() < self.hitbox.getP1().getY()-20 < tuple[1].getY():
                     	if tuple[2].trap_on == True:
                     		H.damaged = True
-	    	
+
             if self.hitbox.getP1().getY() -20 < 0:
                 canMove = False
             if canMove:
@@ -289,7 +289,6 @@ class Bullet:
     def fire(self,point):
         if point:
             bullet = Bullet(self.w,self.right_hand.getCenter().getX(),self.right_hand.getCenter().getY(),point)
-
     and put this in the "while key != 'q':" loop:
     click = w.checkMouse()
     P.fire(click)
@@ -362,7 +361,6 @@ class Monster:
     '''
     This is the parent monster class that does all the generic monster things
     We make it a thread so it moves, and waits, independently of the player
-
     MONSTERS MUST BE DECLARED AFTER PLAYER
     '''
 
@@ -680,7 +678,7 @@ class maze:
 		self.checkPlayerCollision(bould)
 
 		self.w.after(speed, self.move_boulder_V, bould, directionu, tbound, bbound, speed)
-		
+
 	def create1(self):
 		w1 = g.GraphWin('Level 1', 600, 600, autoflush = False)
 		self.w = w1
@@ -774,8 +772,8 @@ class maze:
 
 		bould = self.make_boulder(g.Point(75,325))
 		self.move_boulder_H(bould, True, 50, 400, 50)
-		
-		
+
+
 		self.trapl2t1 = fire_trap(self.w, g.Point(350, 350), g.Point(500, 400), 2000)
 		self.listOfTrapPoints.append((g.Point(350, 350), g.Point(500, 400), self.trapl2t1))
 		self.trapl2t2 = fire_trap(self.w, g.Point(150, 200), g.Point(300, 250), 2000)
@@ -842,7 +840,7 @@ class maze:
 
 		bould2 = self.make_boulder(g.Point(775, 75))
 		self.move_boulder_V(bould2, False, 50, 450, 50)
-		
+
 		self.trapl3t1 = fire_trap(self.w, g.Point(400, 100), g.Point(450, 200), 2500)
 		self.listOfTrapPoints.append((g.Point(400, 100), g.Point(450, 200), self.trapl3t1))
 		self.trapl3t2 = fire_trap(self.w, g.Point(550, 300), g.Point(600, 500), 1000)
@@ -861,7 +859,7 @@ class maze:
 		box.setFill('black')
 		box.draw(self.w)
 		self.listOfWallPoints.append((p1,p2))
-		
+
 
 
 class fire_trap:
@@ -872,14 +870,14 @@ class fire_trap:
 		self.time = dur
 		self.create()
 		self.run()
-	
+
 	def create(self):
 		self.trap = g.Rectangle(self.p1, self.p2)
 		self.trap_on = True
 		self.trap.setFill('red')
 		self.trap.draw(self.w)
-	
-	def run(self): 
+
+	def run(self):
 		if self.trap_on:
 			self.trap.setFill('white')
 			self.trap.undraw()
@@ -908,8 +906,12 @@ global lvl
 lvl = 1
 gameWon = False
 
+print ('Game Loading...')
+
+time.sleep(2)
 
 if lvl == 1:
+    #initialization for level 1
     P = refPlayer('win',0,0)
     M2 = maze(lvl)
     P = Player(M2.w, 500, 550)
@@ -917,6 +919,7 @@ if lvl == 1:
     monster1 = Monster(25,373,M2.w,'explore')
     monster2 = Monster(200,25,M2.w,'explore',g.Point(300,300))
 
+    #control loop level 1
     key = None
     while key != 'q':
         key = M2.w.checkKey()
@@ -933,13 +936,14 @@ if lvl == 1:
     M2.w.close()
 
 if lvl == 2:
+    #initialization for level 2
     M2 = maze(lvl)
     P = Player(M2.w, 575, 600)
     H = Health(M2.w, 0, 690)
     monster1 = Monster(25,373,M2.w,'explore')
     monster2 = Monster(725,373,M2.w,'wait',g.Point(300,300))
     monster3 = Monster(475,25,M2.w,'patrol',g.Point(475,226))
-
+    #control loop level 2
     key = None
     while key != 'q':
         key = M2.w.checkKey()
@@ -956,6 +960,7 @@ if lvl == 2:
     M2.w.close()
 
 if lvl == 3:
+    #initialization for level 2
     M2 = maze(lvl)
     P = Player(M2.w, 775, 600)
     H = Health(M2.w, 0, 690)
@@ -963,7 +968,7 @@ if lvl == 3:
     monster2 = Monster(925,423,M2.w,'chase')
     monster3 = Monster(575,25,M2.w,'explore')
     monster4 = Monster(75,100,M2.w,'patrol',g.Point(301,100))
-
+    #control loop level 3
     key = None
     while key != 'q':
         key = M2.w.checkKey()
@@ -982,5 +987,7 @@ if lvl == 3:
 
 if gameWon:
     print ('Congratulations! You won!')
+    time.sleep(1)
 else:
     print ('Better luck next time!')
+    time.sleep(1)
