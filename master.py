@@ -612,6 +612,11 @@ class maze:
 			self.create3()
 
 	def make_boulder(self, ptC):
+		'''
+		Creates boulder of radius 25 and fills it gray. Returns graphic Circle object.
+		ptC: center of where boulder should be first drawn, graphic Point object
+		boulder: Circle object representing the boulder
+		'''
 		boulder = g.Circle(g.Point(ptC.getX(), ptC.getY()), 25)
 		boulder.setFill('gray')
 		boulder.draw(self.w)
@@ -678,7 +683,8 @@ class maze:
 		self.checkPlayerCollision(bould)
 
 		self.w.after(speed, self.move_boulder_V, bould, directionu, tbound, bbound, speed)
-
+		
+###### call to create 1st level map #########	
 	def create1(self):
 		w1 = g.GraphWin('Level 1', 600, 600, autoflush = False)
 		self.w = w1
@@ -694,7 +700,8 @@ class maze:
 		stairs.setFill('yellow')
 		stairs.setOutline('yellow')
 		stairs.draw(self.w)
-
+		
+		#drawing walls
 		self.make_box(g.Point(70, 0), g.Point(100, 200))
 
 		self.make_box(g.Point(200, 100), g.Point(250, 350))
@@ -714,13 +721,11 @@ class maze:
 		bould = self.make_boulder(g.Point(125, 75))
 		self.move_boulder_H(bould, True, 100, 600, 50)
 
-
+###### call to create 2nd level map #########	
 	def create2(self):
 
 		w2 = g.GraphWin('Level 2', 750, 700, autoflush = False)
 		self.w = w2
-		#map is 700 tall x 750 long but the extra
-		#is so u can display things on the side
 
 		#drawing borders of map
 		self.line_seg(g.Point(0,0),g.Point(0, 700))
@@ -733,8 +738,8 @@ class maze:
 		stairs.setFill('yellow')
 		stairs.setOutline('yellow')
 		stairs.draw(self.w)
-
-
+		
+		#drawing walls
 		self.make_box(g.Point(70, 0), g.Point(250, 100))
 		self.make_box(g.Point(200, 0), g.Point(250, 200))
 		self.make_box(g.Point(0, 200), g.Point(150, 250))
@@ -756,18 +761,13 @@ class maze:
 
 		self.make_box(g.Point(0, 400), g.Point(50, 650))
 		self.make_box(g.Point(100, 550), g.Point(250, 600))
-		#self.make_box(g.Point(100, 600), g.Point(650, 650)) --
 		self.make_box(g.Point(350, 500), g.Point(650, 550))
 		self.make_box(g.Point(600, 350), g.Point(650, 500))
-		#self.make_box(g.Point(550, 550), g.Point(600, 600))
 
-		#self.make_box(g.Point(350, 450), g.Point(400, 500))
-		#self.make_box(g.Point(400, 400), g.Point(550, 450))
 		self.make_box(g.Point(500, 350), g.Point(550, 400))
 
 		self.make_box(g.Point(700, 400), g.Point(750, 600))
 		self.make_box(g.Point(0, 650), g.Point(750, 700))
-		#self.make_box(g.Point(650, 600), g.Point(750, 650))--
 
 
 		bould = self.make_boulder(g.Point(75,325))
@@ -778,16 +778,11 @@ class maze:
 		self.listOfTrapPoints.append((g.Point(350, 350), g.Point(500, 400), self.trapl2t1))
 		self.trapl2t2 = fire_trap(self.w, g.Point(150, 200), g.Point(300, 250), 2000)
 		self.listOfTrapPoints.append((g.Point(150, 200), g.Point(300, 250), self.trapl2t2))
-# 		self.trap1 = True
-# 		self.fire_trap(g.Point(350, 350), g.Point(500, 400), True, 2000)
-# 		self.trap2 = True
-# 		self.fire_trap(g.Point(150, 200), g.Point(300, 250), True, 2000)
 
-
+###### call to create 3rd level map #########	
 	def create3(self):
 		w3 = g.GraphWin('Level 3', 950, 700, autoflush = False)
 		self.w = w3
-		#map is 700 tall x 950 long
 
 		#drawing borders of map
 		self.line_seg(g.Point(0,0),g.Point(0, 700))
@@ -872,12 +867,19 @@ class fire_trap:
 		self.run()
 
 	def create(self):
+		'''
+		Draws the fire trap at the given coordinates defined in __init__
+		'''
 		self.trap = g.Rectangle(self.p1, self.p2)
 		self.trap_on = True
 		self.trap.setFill('red')
 		self.trap.draw(self.w)
 
 	def run(self):
+		'''
+		Turns trap on and off for intervals of a given duration defined in __init__. Draws 
+		the trap in red or white depending if its on/off.
+		'''
 		if self.trap_on:
 			self.trap.setFill('white')
 			self.trap.undraw()
