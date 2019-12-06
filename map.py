@@ -63,27 +63,20 @@ class maze:
 
 
 		
-	def fire_trap(self, pt_topL, pt_bottR):
-		#pass
-		#use after() to time the on and off
-		self.trap_on = False
-		
-		if self.trap_on:
-			trap = g.Rectangle(pt_topL, pt_bottR)
+	def fire_trap(self, pt_topL, pt_bottR, trap_on, dur):
+		trap = g.Rectangle(pt_topL, pt_bottR)
+		if trap_on:
 			trap.setFill('red')
-			trap.setOutline('red')
+			#trap.setOutline('red')
 			trap.draw(self.w)
 		else:
- 			trap = g.Rectangle(pt_topL, pt_bottR)
+ 			#trap = g.Rectangle(pt_topL, pt_bottR)
  			trap.setFill('white')
- 			trap.setOutline('white')
+ 			#trap.setOutline('white')
  			trap.draw(self.w)
  		
- 		
- 		
-		self.trap_on = not self.trap_on
-		
-		self.w.after(8, self.fire_trap, self.trap_on)
+		trap_on = not trap_on
+		self.w.after(dur, self.fire_trap, pt_topL, pt_bottR, trap_on, dur)
 		
 
 		
@@ -205,7 +198,8 @@ class maze:
 		bould2 = self.make_boulder(g.Point(775, 75))
 		self.move_boulder_V(bould2, False, 50, 450)
 		
-		#self.fire_trap(g.Point(400, 100), g.Point(450, 200))
+		self.fire_trap(g.Point(400, 100), g.Point(450, 200), True, 2500)
+		self.fire_trap(g.Point(550, 300), g.Point(600, 500), True, 1000)
 		
 		self.w.getMouse()
 		self.w.close()
