@@ -374,8 +374,10 @@ class Monster():
             part.setOutline(color)
             if part == self.Leye or part == self.Reye:
                 part.setFill('white')
+                part.setOutline('white')
             if part == self.Lpup or part == self.Rpup:
                 part.setFill('black')
+                part.setOutline('black')
             part.draw(self.w)
 
         if self.behavior =='wait':
