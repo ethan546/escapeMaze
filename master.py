@@ -582,8 +582,9 @@ class maze:
 
 	def __init__(self, lvl):
 		self.lvl = lvl
+		self.game_going = True #is game currently being played, False when game over
 		self.listOfWallPoints = []
-		self.playerRadius = 20
+		self.listOfTrapPoints = []
 		if self.lvl == 1:
 			self.create1()
 		elif self.lvl == 2:
@@ -596,19 +597,6 @@ class maze:
 		boulder.setFill('gray')
 		boulder.draw(self.w)
 		return boulder
-
-	def checkPlayerCollision(self,bould):
-		'''
-		Checks if the boulder colides with the player
-		Return True/False
-		'''
-
-		xDist = P.body.getCenter().getX()-bould.getCenter().getX()
-		yDist = P.body.getCenter().getY()-bould.getCenter().getY()
-		totalDist = math.sqrt(xDist**2 + yDist**2)
-		if totalDist <= 50:
-			H.damaged = True
-
 
 	def move_boulder_H(self, bould, directionr, lbound, rbound, speed):
 		'''
@@ -630,9 +618,6 @@ class maze:
 				bould.move(-5, 0)
 			elif bould.getCenter().getX()-25<=lbound:
 				directionr = True
-
-		self.checkPlayerCollision(bould)
-
 		self.w.after(speed, self.move_boulder_H, bould, directionr, lbound, rbound, speed)
 
 	def move_boulder_V(self, bould, directionu, tbound, bbound, speed):
@@ -654,28 +639,8 @@ class maze:
 				bould.move(0, 5)
 			elif bould.getCenter().getY()+25 >= bbound:
 				directionu = True
-
-		self.checkPlayerCollision(bould)
-
 		self.w.after(speed, self.move_boulder_V, bould, directionu, tbound, bbound, speed)
-
-
-
-	def fire_trap(self, pt_topL, pt_bottR, trap_on, dur):
-		trap = g.Rectangle(pt_topL, pt_bottR)
-		if trap_on:
-			trap.setFill('red')
-			#trap.setOutline('red')
-			trap.draw(self.w)
-		else:
- 			#trap = g.Rectangle(pt_topL, pt_bottR)
- 			trap.setFill('white')
- 			#trap.setOutline('white')
- 			trap.draw(self.w)
-
-		trap_on = not trap_on
-		self.w.after(dur, self.fire_trap, pt_topL, pt_bottR, trap_on, dur)
-
+		
 	def create1(self):
 		w1 = g.GraphWin('Level 1', 600, 600, autoflush = False)
 		self.w = w1
@@ -769,9 +734,16 @@ class maze:
 
 		bould = self.make_boulder(g.Point(75,325))
 		self.move_boulder_H(bould, True, 50, 400, 50)
-
-		self.fire_trap(g.Point(350, 350), g.Point(500, 400), True, 2000)
-		self.fire_trap(g.Point(150, 200), g.Point(300, 250), True, 2000)
+		
+		
+		self.trapl2t1 = fire_trap(self.w, g.Point(350, 350), g.Point(500, 400), 2000)
+		self.listOfTrapPoints.append((g.Point(350, 350), g.Point(500, 400), self.trapl2t1))
+		self.trapl2t2 = fire_trap(self.w, g.Point(150, 200), g.Point(300, 250), 2000)
+		self.listOfTrapPoints.append((g.Point(150, 200), g.Point(300, 250), self.trapl2t2))
+# 		self.trap1 = True
+# 		self.fire_trap(g.Point(350, 350), g.Point(500, 400), True, 2000)
+# 		self.trap2 = True
+# 		self.fire_trap(g.Point(150, 200), g.Point(300, 250), True, 2000)
 
 
 	def create3(self):
@@ -830,10 +802,13 @@ class maze:
 
 		bould2 = self.make_boulder(g.Point(775, 75))
 		self.move_boulder_V(bould2, False, 50, 450, 50)
-
-		self.fire_trap(g.Point(400, 100), g.Point(450, 200), True, 2500)
-		self.fire_trap(g.Point(550, 300), g.Point(600, 500), True, 1000)
-		self.fire_trap(g.Point(550, 150), g.Point(700, 200), True, 2000)
+		
+		self.trapl3t1 = fire_trap(self.w, g.Point(400, 100), g.Point(450, 200), 2500)
+		self.listOfTrapPoints.append((g.Point(400, 100), g.Point(450, 200), self.trapl3t1))
+		self.trapl3t2 = fire_trap(self.w, g.Point(550, 300), g.Point(600, 500), 1000)
+		self.listOfTrapPoints.append((g.Point(550, 300), g.Point(600, 500), self.trapl3t2))
+		self.trapl3t3 = fire_trap(self.w, g.Point(550, 150), g.Point(700, 200), 2000)
+		self.listOfTrapPoints.append((g.Point(550, 150), g.Point(700, 200), self.trapl3t3))
 
 
 	def line_seg(self, p1, p2):
@@ -846,6 +821,35 @@ class maze:
 		box.setFill('black')
 		box.draw(self.w)
 		self.listOfWallPoints.append((p1,p2))
+		
+
+
+class fire_trap:
+	def __init__(self, window, pt1, pt2, dur):
+		self.w = window
+		self.p1 = pt1
+		self.p2 = pt2
+		self.time = dur
+		self.create()
+		self.run()
+	
+	def create(self):
+		self.trap = g.Rectangle(self.p1, self.p2)
+		self.trap_on = True
+		self.trap.setFill('red')
+		self.trap.draw(self.w)
+	
+	def run(self): 
+		if self.trap_on:
+			self.trap.setFill('red')
+			self.trap.undraw()
+			self.trap.draw(self.w)
+		else:
+			self.trap.setFill('white')
+			self.trap.undraw()
+			self.trap.draw(self.w)
+		self.trap_on = not self.trap_on
+		self.w.after(self.time, self.run)
 #w = g.GraphWin('CS Project Game', 1250, 700, autoflush = False)
 #w.setBackground('green')
 
