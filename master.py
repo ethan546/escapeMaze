@@ -93,7 +93,7 @@ class Player:
         if key == 'Up':
             canMove = True
             for tuple in self.mazeName.listOfWallPoints:
-                if tuple[0].getX() < self.hitbox.getCenter().getX() < tuple[1].getX():
+                if tuple[0].getX() < self.hitbox.getP1().getX() < tuple[1].getX() or tuple[0].getX() < self.hitbox.getP2().getX() < tuple[1].getX():
                     if tuple[0].getY() < self.hitbox.getP1().getY()-20 < tuple[1].getY():
                         canMove = False
             if canMove:
@@ -117,7 +117,7 @@ class Player:
         if key == 'Down':
             canMove = True
             for tuple in self.mazeName.listOfWallPoints:
-                if tuple[0].getX() < self.hitbox.getCenter().getX() < tuple[1].getX():
+                if tuple[0].getX() < self.hitbox.getP1().getX() < tuple[1].getX() or tuple[0].getX() < self.hitbox.getP2().getX() < tuple[1].getX():
                     if tuple[0].getY() < self.hitbox.getP2().getY()+20 < tuple[1].getY():
                         canMove = False
             if canMove:
@@ -142,7 +142,7 @@ class Player:
             canMove = True
             for tuple in self.mazeName.listOfWallPoints:
                 if tuple[0].getX() < self.hitbox.getP2().getX() +20 < tuple[1].getX():
-                    if tuple[0].getY() < self.hitbox.getCenter().getY() < tuple[1].getY():
+                    if tuple[0].getY() < self.hitbox.getP1().getY() < tuple[1].getY() or tuple[0].getY() < self.hitbox.getP2().getY() < tuple[1].getY():
                         canMove = False
             if canMove:
                 self.hitbox.move(20, 0)
@@ -166,7 +166,7 @@ class Player:
             canMove = True
             for tuple in self.mazeName.listOfWallPoints:
                 if tuple[0].getX() < self.hitbox.getP1().getX() -20 < tuple[1].getX():
-                    if tuple[0].getY() < self.hitbox.getCenter().getY() < tuple[1].getY():
+                    if tuple[0].getY() < self.hitbox.getP1().getY() < tuple[1].getY() or tuple[0].getY() < self.hitbox.getP2().getY() < tuple[1].getY():
                         canMove = False
             if canMove:
                 self.hitbox.move(-20, 0)
@@ -630,7 +630,7 @@ class maze:
 		self.make_box(g.Point(650, 600), g.Point(750, 650))
 
 
-		bould = self.make_boulder(g.Point(434,484))
+		bould = self.make_boulder(g.Point(430,450))
 		self.move_boulder_H(bould, True)
 
 		#removed the w.close() here
