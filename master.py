@@ -881,11 +881,11 @@ class fire_trap:
 	
 	def run(self): 
 		if self.trap_on:
-			self.trap.setFill('red')
+			self.trap.setFill('white')
 			self.trap.undraw()
 			self.trap.draw(self.w)
 		else:
-			self.trap.setFill('white')
+			self.trap.setFill('red')
 			self.trap.undraw()
 			self.trap.draw(self.w)
 		self.trap_on = not self.trap_on
