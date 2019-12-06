@@ -568,7 +568,7 @@ class maze:
 		boulder.draw(self.w)
 		return boulder
 
-	def move_boulder_H(self, bould, directionr, lbound, rbound):
+	def move_boulder_H(self, bould, directionr, lbound, rbound, speed):
 		'''
 		Function moves a boulder passed in left and right within the given bounds.
 		bould: boulder graphic (type Circle)
@@ -588,9 +588,9 @@ class maze:
 				bould.move(-5, 0)
 			elif bould.getCenter().getX()-25<=lbound:
 				directionr = True
-		self.w.after(100, self.move_boulder_H, bould, directionr, lbound, rbound)
+		self.w.after(speed, self.move_boulder_H, bould, directionr, lbound, rbound, speed)
 
-	def move_boulder_V(self, bould, directionu, tbound, bbound):
+	def move_boulder_V(self, bould, directionu, tbound, bbound, speed):
 		'''
 		Function moves a boulder passed in left and right within the given bounds.
 		bould: boulder graphic (type Circle)
@@ -609,7 +609,7 @@ class maze:
 				bould.move(0, 5)
 			elif bould.getCenter().getY()+25 >= bbound:
 				directionu = True
-		self.w.after(100, self.move_boulder_V, bould, directionu, tbound, bbound)
+		self.w.after(speed, self.move_boulder_V, bould, directionu, tbound, bbound, speed)
 
 
 
@@ -661,7 +661,7 @@ class maze:
 		self.make_box(g.Point(50, 450), g.Point(300, 500))
 
 		bould = self.make_boulder(g.Point(125, 75))
-		self.move_boulder_H(bould, True, 100, 600)
+		self.move_boulder_H(bould, True, 100, 600, 50)
 
 
 	def create2(self):
@@ -720,7 +720,7 @@ class maze:
 
 
 		bould = self.make_boulder(g.Point(75,325))
-		self.move_boulder_H(bould, True, 50, 400)
+		self.move_boulder_H(bould, True, 50, 400, 50)
 
 		self.fire_trap(g.Point(350, 350), g.Point(500, 400), True, 2000)
 		self.fire_trap(g.Point(150, 200), g.Point(300, 250), True, 2000)
@@ -778,10 +778,10 @@ class maze:
 
 		#setting up obstacles
 		bould = self.make_boulder(g.Point(175,275))
-		self.move_boulder_H(bould, True, 150, 450)
+		self.move_boulder_H(bould, True, 150, 450, 50)
 
 		bould2 = self.make_boulder(g.Point(775, 75))
-		self.move_boulder_V(bould2, False, 50, 450)
+		self.move_boulder_V(bould2, False, 50, 450, 50)
 
 		self.fire_trap(g.Point(400, 100), g.Point(450, 200), True, 2500)
 		self.fire_trap(g.Point(550, 300), g.Point(600, 500), True, 1000)
