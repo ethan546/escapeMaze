@@ -11,3 +11,5 @@ Press 'q' if you need to quit the game.
 
 Your goal is to escape through the maze without getting killed by all the traps and monsters!
 Shoot monsters to temporarily stun them!
+
+Note: not all non-master scripts have current versions of their respective classes, since many of the classes were modified in the master script so they would work better with one another.
