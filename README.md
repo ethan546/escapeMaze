@@ -1,4 +1,4 @@
-# Escape Maze
+# escapeMaze
 
 How to run the game:
 Just run the master.py script. This file works independently, and the other scripts are just there to show the building process before we put everything together.
