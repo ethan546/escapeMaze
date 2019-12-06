@@ -211,6 +211,17 @@ class Player:
         if point:
             bullet = Bullet(self.w,self.right_hand.getCenter().getX(),self.right_hand.getCenter().getY(),point)
 
+class refPlayer(Player):
+    '''
+    just an imaginary player so other things can reference it
+    without getting annoyed that the player doesn't exist
+    '''
+    def __init__(self,win,x,y):
+        self.x = x
+        self.y = y
+        self.body = g.Rectangle(g.Point(self.x-10, self.y-17.5),
+                                g.Point(self.x+10, self.y+12.5))
+
 class Health:
     '''
     Make sure the name of the maze is correct
@@ -568,6 +579,7 @@ class maze:
 		self.lvl = lvl
 		self.game_going = True #is game currently being played, False when game over
 		self.listOfWallPoints = []
+		self.playerRadius = 20
 		if self.lvl == 1:
 			self.create1()
 		elif self.lvl == 2:
@@ -580,6 +592,21 @@ class maze:
 		boulder.setFill('gray')
 		boulder.draw(self.w)
 		return boulder
+
+	def checkPlayerCollision(self,bould):
+		'''
+		Checks if the boulder colides with the player
+		Return True/False
+
+		also assumes that the player is a sphere
+		'''
+
+		xDist = P.body.getCenter().getX()-bould.getCenter().getX()
+		yDist = P.body.getCenter().getY()-bould.getCenter().getY()
+		totalDist = math.sqrt(xDist**2 + yDist**2)
+		if totalDist <= 50:
+			H.damaged = True
+
 
 	def move_boulder_H(self, bould, directionr, lbound, rbound, speed):
 		'''
@@ -601,6 +628,9 @@ class maze:
 				bould.move(-5, 0)
 			elif bould.getCenter().getX()-25<=lbound:
 				directionr = True
+
+		self.checkPlayerCollision(bould)
+
 		self.w.after(speed, self.move_boulder_H, bould, directionr, lbound, rbound, speed)
 
 	def move_boulder_V(self, bould, directionu, tbound, bbound, speed):
@@ -622,6 +652,9 @@ class maze:
 				bould.move(0, 5)
 			elif bould.getCenter().getY()+25 >= bbound:
 				directionu = True
+
+		self.checkPlayerCollision(bould)
+
 		self.w.after(speed, self.move_boulder_V, bould, directionu, tbound, bbound, speed)
 
 
@@ -815,9 +848,10 @@ class maze:
 #w.setBackground('green')
 
 global lvl
-lvl = 3
+lvl = 1
 
 if lvl == 1:
+    P = refPlayer('win',0,0)
     M2 = maze(1)
     P = Player(M2.w, 500, 550)
     H = Health(M2.w, 0, 590)
