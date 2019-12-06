@@ -639,12 +639,12 @@ class maze:
 		self.line_seg(g.Point(50,0),g.Point(600, 0))
 
 		#the winning landing spot
-		stairs = g.Rectangle(g.Point(0, 0),g.Point(50, 100))
+		stairs = g.Rectangle(g.Point(0, 0),g.Point(70, 100))
 		stairs.setFill('yellow')
 		stairs.setOutline('yellow')
 		stairs.draw(self.w)
 
-		self.make_box(g.Point(50, 0), g.Point(100, 200))
+		self.make_box(g.Point(70, 0), g.Point(100, 200))
 
 		self.make_box(g.Point(200, 100), g.Point(250, 350))
 		self.make_box(g.Point(0, 300), g.Point(200, 350))
@@ -678,13 +678,13 @@ class maze:
 		self.line_seg(g.Point(50,0),g.Point(750, 0))
 
 		#the winning landing spot
-		stairs = g.Rectangle(g.Point(0, 0),g.Point(50, 100))
+		stairs = g.Rectangle(g.Point(0, 0),g.Point(70, 100))
 		stairs.setFill('yellow')
 		stairs.setOutline('yellow')
 		stairs.draw(self.w)
 
 
-		self.make_box(g.Point(50, 0), g.Point(250, 100))
+		self.make_box(g.Point(70, 0), g.Point(250, 100))
 		self.make_box(g.Point(200, 0), g.Point(250, 200))
 		self.make_box(g.Point(0, 200), g.Point(150, 250))
 		self.make_box(g.Point(0, 250), g.Point(50, 350))
@@ -738,13 +738,13 @@ class maze:
 		self.line_seg(g.Point(50,0),g.Point(950, 0))
 
 		#the winning landing spot
-		stairs = g.Rectangle(g.Point(0, 0),g.Point(50, 100))
+		stairs = g.Rectangle(g.Point(0, 0),g.Point(70, 100))
 		stairs.setFill('yellow')
 		stairs.setOutline('yellow')
 		stairs.draw(self.w)
 
 		#drawing the map
-		self.make_box(g.Point(50, 0), g.Point(300, 50))
+		self.make_box(g.Point(70, 0), g.Point(300, 50))
 
 		self.make_box(g.Point(0, 150), g.Point(50, 400))
 
