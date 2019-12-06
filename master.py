@@ -224,7 +224,7 @@ class refPlayer(Player):
 
 class Health:
     '''
-    Make sure the name of the maze is correct
+    This is the health bar
     '''
     def __init__(self,win,x,y):
         self.w = win
@@ -233,6 +233,7 @@ class Health:
         self.length = 300
         self.damaged = False
         self.mazeName = M2
+        self.playerDead = False
         self.create()
         self.maintain()
 
@@ -248,12 +249,12 @@ class Health:
         This function makes sure the bar changes when we take damage
         '''
         if self.damaged:
-            self.length -= 30
+            self.length -= 60
             self.body.undraw()
             self.create()
             self.damaged = False
-            if self.length == 0:
-                self.mazeName.game_going = False
+            if self.length <= 0:
+                self.playerDead = True
         self.w.after(100, self.maintain)
 
 
@@ -419,6 +420,9 @@ class Monster:
 #behavior-related functions
 #--------------------------------------
     def move(self, dx, dy):
+        '''
+        make the monster move
+        '''
         for part in self.parts:
             part.move(dx,dy)
 
@@ -439,8 +443,6 @@ class Monster:
         '''
         Checks if the monster colides with the player
         Return True/False
-
-        also assumes that the player is a sphere
         '''
         xDist = self.playerName.body.getCenter().getX()-self.body.getCenter().getX()
         yDist = self.playerName.body.getCenter().getY()-self.body.getCenter().getY()
@@ -471,6 +473,9 @@ class Monster:
                 self.w.after(100, self.chasePlayer)
 
     def getExploreMove(self):
+        '''
+        This will give the exploring monsters a random directrion to move in
+        '''
         x = random.randint(-5,5)/10
         y = random.randint(-5,5)/10
         self.exploreCounter = random.randint(0,100)
@@ -540,7 +545,7 @@ class Monster:
 
     def explore(self):
         '''
-        just walk around(and don't hit walls?) until player is in detection range. Then chase
+        just walk around(and don't go off the map) until player is in detection range. Then chase
         '''
         if self.isShot:
             self.isShot = False
@@ -577,7 +582,6 @@ class maze:
 
 	def __init__(self, lvl):
 		self.lvl = lvl
-		self.game_going = True #is game currently being played, False when game over
 		self.listOfWallPoints = []
 		self.playerRadius = 20
 		if self.lvl == 1:
@@ -597,8 +601,6 @@ class maze:
 		'''
 		Checks if the boulder colides with the player
 		Return True/False
-
-		also assumes that the player is a sphere
 		'''
 
 		xDist = P.body.getCenter().getX()-bould.getCenter().getX()
@@ -847,12 +849,25 @@ class maze:
 #w = g.GraphWin('CS Project Game', 1250, 700, autoflush = False)
 #w.setBackground('green')
 
+#--------------------------------------
+#Start of main scripts
+#--------------------------------------
+def playerOnStairs():
+    p1,p2 = g.Point(0, 0),g.Point(70, 100)
+    if p1.getX() < P.hitbox.getCenter().getX() < p2.getX():
+        if p1.getY() < P.hitbox.getCenter().getY() < p2.getY():
+            return True
+        else:
+            return False
+
 global lvl
 lvl = 1
+gameWon = False
+
 
 if lvl == 1:
     P = refPlayer('win',0,0)
-    M2 = maze(1)
+    M2 = maze(lvl)
     P = Player(M2.w, 500, 550)
     H = Health(M2.w, 0, 590)
     monster1 = Monster(25,373,M2.w,'explore')
@@ -864,10 +879,17 @@ if lvl == 1:
         P.control(key)
         click = M2.w.checkMouse()
         P.fire(click)
+
+        if playerOnStairs():
+            M2.w.close()
+            lvl = 2
+            break
+        if H.playerDead:
+            break
     M2.w.close()
 
 if lvl == 2:
-    M2 = maze(2)
+    M2 = maze(lvl)
     P = Player(M2.w, 575, 600)
     H = Health(M2.w, 0, 690)
     monster1 = Monster(25,373,M2.w,'explore')
@@ -880,10 +902,17 @@ if lvl == 2:
         P.control(key)
         click = M2.w.checkMouse()
         P.fire(click)
+
+        if playerOnStairs():
+            M2.w.close()
+            lvl = 3
+            break
+        if H.playerDead:
+            break
     M2.w.close()
 
 if lvl == 3:
-    M2 = maze(3)
+    M2 = maze(lvl)
     P = Player(M2.w, 575, 600)
     H = Health(M2.w, 0, 690)
     monster1 = Monster(25,423,M2.w,'wait')
@@ -897,4 +926,17 @@ if lvl == 3:
         P.control(key)
         click = M2.w.checkMouse()
         P.fire(click)
+
+        if playerOnStairs():
+            M2.w.close()
+            gameWon = True
+            break
+
+        if H.playerDead:
+            break
     M2.w.close()
+
+if gameWon:
+    print ('Congratulations! You won!')
+else:
+    print ('Better luck next time!')
