@@ -7,6 +7,7 @@ Just run the master.py script. This file works independently, and the other scri
 How to play:
 Use the directional arrows to move the player.
 Use the mouse to shoot. 
+Press 'q' if you need to quit the game.
 
 Your goal is to escape through the maze without getting killed by all the traps and monsters!
 Shoot monsters to temporarily stun them!
