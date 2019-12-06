@@ -598,6 +598,19 @@ class maze:
 		boulder.draw(self.w)
 		return boulder
 
+	def checkPlayerCollision(self,bould):
+		'''
+		Checks if the boulder colides with the player
+		Return True/False
+		'''
+
+		xDist = P.body.getCenter().getX()-bould.getCenter().getX()
+		yDist = P.body.getCenter().getY()-bould.getCenter().getY()
+		totalDist = math.sqrt(xDist**2 + yDist**2)
+		if totalDist <= 50:
+			H.damaged = True
+
+
 	def move_boulder_H(self, bould, directionr, lbound, rbound, speed):
 		'''
 		Function moves a boulder passed in left and right within the given bounds.
@@ -618,6 +631,9 @@ class maze:
 				bould.move(-5, 0)
 			elif bould.getCenter().getX()-25<=lbound:
 				directionr = True
+
+		self.checkPlayerCollision(bould)
+
 		self.w.after(speed, self.move_boulder_H, bould, directionr, lbound, rbound, speed)
 
 	def move_boulder_V(self, bould, directionu, tbound, bbound, speed):
@@ -639,6 +655,9 @@ class maze:
 				bould.move(0, 5)
 			elif bould.getCenter().getY()+25 >= bbound:
 				directionu = True
+
+		self.checkPlayerCollision(bould)
+
 		self.w.after(speed, self.move_boulder_V, bould, directionu, tbound, bbound, speed)
 		
 	def create1(self):
